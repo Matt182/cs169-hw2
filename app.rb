@@ -42,8 +42,12 @@ class HangpersonApp < Sinatra::Base
     ### YOUR CODE HERE ###
     
     if letter == nil then redirect '/show' end
+    begin
+      if not @game.guess(letter) then flash[:message] = "You have already used that letter." end
+    rescue ArgumentError
+      flash[:message] = "Invalid character."
+    end
     
-    if not @game.guess(letter) then flash[:message] = "You have already used that letter" end
       
     if @game.check_win_or_lose == :lose
       redirect '/lose'
